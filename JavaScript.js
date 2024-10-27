@@ -1,7 +1,7 @@
 let timer;
 let currentStep = 0;
 let isExercise = true;
-let isTimerActive = false; // To track if the timer is running
+let isTimerActive = false;
 const beep = new Audio('Beep.mp3'); // Load the beep sound
 let wakeLock = null; // To store the wake lock instance
 
@@ -29,42 +29,32 @@ function startTimer() {
     const steps = parseInt(document.getElementById('steps').value) || 0;
 
     if (exerciseDuration <= 0 || restDuration <= 0 || steps <= 0) {
-        alert('Please enter valid durations and steps.');
+        alert('Please Enter Valid Duration / Steps.');
         return;
     }
 
-    // Reset the timer, step, and mode if Restart is clicked
     clearInterval(timer);
     currentStep = 0;
     isExercise = true;
     isTimerActive = true;
 
-    // Request wake lock to prevent screen sleep
     requestWakeLock();
 
-    // Change button text to "Restart" if the timer is active
     document.getElementById('startButton').innerText = 'Restart';
-
-    // Enable the Stop button when the timer starts
     document.getElementById('stopButton').disabled = false;
 
     document.getElementById('timerDisplay').innerText = 'Starting...';
     document.getElementById('stepCounter').innerText = `Step: 1 / ${steps}`;
 
-    // Start the first step after a short delay
-    setTimeout(() => nextStep(exerciseDuration, restDuration, steps), 1000);
+    nextStep(exerciseDuration, restDuration, steps); // Start immediately
 }
 
 function nextStep(exerciseDuration, restDuration, steps) {
     if (currentStep >= steps) {
         document.getElementById('timerDisplay').innerText = 'Workout Complete!';
-        document.getElementById('startButton').innerText = 'Start'; // Change back to Start after completion
+        document.getElementById('startButton').innerText = 'Start';
         isTimerActive = false;
-
-        // Disable the Stop button when the workout is complete
         document.getElementById('stopButton').disabled = true;
-
-        // Release wake lock after workout completion
         releaseWakeLock();
         return;
     }
@@ -74,32 +64,23 @@ function nextStep(exerciseDuration, restDuration, steps) {
     document.getElementById('timerDisplay').innerText = `${type} for ${duration}s`;
 
     let timeLeft = duration;
+
     timer = setInterval(() => {
         if (timeLeft <= 0) {
             clearInterval(timer);
-
-            // Smooth transition delay (1 second) between exercise and rest
-            setTimeout(() => {
-                if (isExercise) {
-                    // End of the exercise period, switch to rest
-                    isExercise = false;
-                    document.getElementById('timerDisplay').innerText = "Rest starting...";
-                } else {
-                    // End of the rest period, increment step and switch to exercise
-                    currentStep++;
-                    isExercise = true;
-                    document.getElementById('timerDisplay').innerText = "Exercise starting...";
-                    if (currentStep < steps) {
-                        document.getElementById('stepCounter').innerText = `Step: ${currentStep + 1} / ${steps}`;
-                    }
+            if (isExercise) {
+                isExercise = false;
+            } else {
+                currentStep++;
+                isExercise = true;
+                if (currentStep < steps) {
+                    document.getElementById('stepCounter').innerText = `Step: ${currentStep + 1} / ${steps}`;
                 }
-
-                // Start the next step after a brief delay for transition
-                setTimeout(() => nextStep(exerciseDuration, restDuration, steps), 1000);
-            }, 1000); // 1-second smooth transition delay
+            }
+            nextStep(exerciseDuration, restDuration, steps); // Continue immediately
         } else {
-            timeLeft--;
-            document.getElementById('timerDisplay').innerText = `${type} for ${timeLeft}s`;
+            timeLeft -= 1;
+            document.getElementById('timerDisplay').innerText = `${type} for ${Math.ceil(timeLeft)}s`;
 
             // Play the beep sound during the last 5 seconds of the exercise period
             if (isExercise && timeLeft <= 5 && timeLeft > 0) {
@@ -118,18 +99,13 @@ function clearFields(){
     alert('Fields Cleared!');
 }
 
-// Stop the timer
 function stopTimer() {
     clearInterval(timer);
     document.getElementById('timerDisplay').innerText = 'Timer Stopped';
-    document.getElementById('startButton').innerText = 'Start'; // Reset the button to "Start"
+    document.getElementById('startButton').innerText = 'Start';
     currentStep = 0;
     isTimerActive = false;
     document.getElementById('stepCounter').innerText = `Step: 0`;
-
-    // Disable the Stop button when the timer is stopped
     document.getElementById('stopButton').disabled = true;
-
-    // Release wake lock when the timer is stopped
     releaseWakeLock();
 }
