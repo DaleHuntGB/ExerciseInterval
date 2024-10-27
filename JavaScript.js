@@ -3,6 +3,25 @@ let currentStep = 0;
 let isExercise = true;
 let isTimerActive = false; // To track if the timer is running
 const beep = new Audio('Beep.mp3'); // Load the beep sound
+let wakeLock = null; // To store the wake lock instance
+
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+        }
+    } catch (err) {
+        console.error(`Failed to acquire wake lock: ${err.message}`);
+    }
+}
+
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release().then(() => {
+            wakeLock = null;
+        });
+    }
+}
 
 function startTimer() {
     const exerciseDuration = parseInt(document.getElementById('exerciseDuration').value) || 0;
@@ -19,6 +38,9 @@ function startTimer() {
     currentStep = 0;
     isExercise = true;
     isTimerActive = true;
+
+    // Request wake lock to prevent screen sleep
+    requestWakeLock();
 
     // Change button text to "Restart" if the timer is active
     document.getElementById('startButton').innerText = 'Restart';
@@ -41,6 +63,9 @@ function nextStep(exerciseDuration, restDuration, steps) {
 
         // Disable the Stop button when the workout is complete
         document.getElementById('stopButton').disabled = true;
+
+        // Release wake lock after workout completion
+        releaseWakeLock();
         return;
     }
 
@@ -84,9 +109,12 @@ function nextStep(exerciseDuration, restDuration, steps) {
     }, 1000);
 }
 
-function clearFields() {
-    // reload the page
-    location.reload();
+function clearFields(){
+    document.getElementById('exerciseDuration').value = '';
+    document.getElementById('restDuration').value = '';
+    document.getElementById('steps').value = '';
+    document.getElementById('timerDisplay').innerText = 'Timer';
+    document.getElementById('stepCounter').innerText = 'Step: 0';
 }
 
 // Stop the timer
@@ -100,4 +128,7 @@ function stopTimer() {
 
     // Disable the Stop button when the timer is stopped
     document.getElementById('stopButton').disabled = true;
+
+    // Release wake lock when the timer is stopped
+    releaseWakeLock();
 }
