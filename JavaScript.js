@@ -84,6 +84,11 @@ function nextStep(exerciseDuration, restDuration, steps) {
     }, 1000);
 }
 
+function clearFields() {
+    // reload the page
+    location.reload();
+}
+
 // Stop the timer
 function stopTimer() {
     clearInterval(timer);

@@ -65,6 +65,11 @@ button {
     margin-top: 10px;
 }
 
+#clearButton {
+    background-color: #007bff;
+    margin-top: 10px;
+}
+
 #stopButton:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
