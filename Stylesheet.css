@@ -116,6 +116,7 @@ button:disabled:hover {
 .step-counter {
     font-size: 1em;
     color: var(--CLR-Steps);
+    margin-bottom: 1em;
 }
 
 .predefinedTimers {
