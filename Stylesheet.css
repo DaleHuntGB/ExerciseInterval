@@ -10,26 +10,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .container {
     background-color: white;
     border-radius: 10px;
-    width: 350px;
-    height: 600px;
+    width: 90vw;
+    max-width: 350px;
+    height: 80vh;
+    max-height: 600px;
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     text-align: center;
-    overflow-y: hidden;
 }
 
 h1 {
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 6vw;
+    max-font-size: 24px;
 }
 
 .inputs {
@@ -37,21 +39,23 @@ h1 {
 }
 
 label {
-    font-size: 16px;
+    font-size: 4vw;
+    max-font-size: 16px;
 }
 
 input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
+    width: 90%;
+    padding: 2vw;
+    margin: 1vw 0;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
 button {
     width: 100%;
-    padding: 15px;
-    font-size: 18px;
+    padding: 3.5vw;
+    font-size: 5vw;
+    max-font-size: 18px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -84,14 +88,16 @@ button:disabled:hover {
 }
 
 .timer {
-    font-size: 36px;
+    font-size: 8vw;
+    max-font-size: 36px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
 }
 
 .step-counter {
-    font-size: 20px;
+    font-size: 5vw;
+    max-font-size: 20px;
     color: #666;
 }
 
@@ -99,5 +105,39 @@ button:disabled:hover {
     .container {
         width: 90%;
         height: 80%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 5vw;
+    }
+
+    input, button {
+        font-size: 4vw;
+        padding: 3vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        height: auto;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 6vw;
+    }
+
+    input, button {
+        font-size: 5vw;
+        padding: 3vw;
+    }
+
+    .timer {
+        font-size: 10vw;
+    }
+
+    .step-counter {
+        font-size: 6vw;
     }
 }
