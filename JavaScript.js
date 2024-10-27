@@ -115,6 +115,7 @@ function clearFields(){
     document.getElementById('steps').value = '';
     document.getElementById('timerDisplay').innerText = 'READY?';
     document.getElementById('stepCounter').innerText = 'Step: 0';
+    alert('Fields Cleared!');
 }
 
 // Stop the timer
