@@ -113,7 +113,7 @@ function clearFields(){
     document.getElementById('exerciseDuration').value = '';
     document.getElementById('restDuration').value = '';
     document.getElementById('steps').value = '';
-    document.getElementById('timerDisplay').innerText = 'Timer';
+    document.getElementById('timerDisplay').innerText = 'READY?';
     document.getElementById('stepCounter').innerText = 'Step: 0';
 }
 
