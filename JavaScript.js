@@ -76,8 +76,8 @@ function nextStep(exerciseDuration, restDuration, steps) {
             timeLeft--;
             document.getElementById('timerDisplay').innerText = `${type} for ${timeLeft}s`;
 
-            // Play the beep sound during the rest period
-            if (!isExercise && timeLeft > 0) {
+            // Play the beep sound during the last 5 seconds of the exercise period
+            if (isExercise && timeLeft <= 5 && timeLeft > 0) {
                 beep.play();
             }
         }
