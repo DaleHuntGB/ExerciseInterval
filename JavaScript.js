@@ -96,7 +96,6 @@ function clearFields(){
     document.getElementById('steps').value = '';
     document.getElementById('timerDisplay').innerText = 'READY?';
     document.getElementById('stepCounter').innerText = 'Step: 0';
-    alert('Fields Cleared!');
 }
 
 function stopTimer() {
@@ -108,4 +107,10 @@ function stopTimer() {
     document.getElementById('stepCounter').innerText = `Step: 0`;
     document.getElementById('stopButton').disabled = true;
     releaseWakeLock();
+}
+
+function setPredefinedTimer(duration, restDuration, steps) {
+    document.getElementById('exerciseDuration').value = duration;
+    document.getElementById('restDuration').value = restDuration;
+    document.getElementById('steps').value = steps;
 }

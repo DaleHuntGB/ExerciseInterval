@@ -4,6 +4,7 @@
     --CLR-ClearButton: #4080FF;
     --CLR-Background: #3F3F3F;
     --CLR-Steps: #FFCC00;
+    --CLR-Timer: #FF80FF;
 }
 
 * {
@@ -69,8 +70,8 @@ input {
 
 button {
     width: 100%;
-    padding: 15px;
-    font-size: 18px;
+    padding: 10px;
+    font-size: 12px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -83,12 +84,12 @@ button {
 
 #stopButton {
     background-color: #dc3545;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 #clearButton {
     background-color: #007bff;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 #stopButton:disabled {
@@ -114,6 +115,25 @@ button:disabled:hover {
 .step-counter {
     font-size: 1em;
     color: var(--CLR-Steps);
+}
+
+.predefinedTimers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    > button {
+        width: 100%;
+        padding: 15px;
+        font-size: 12px;
+        background-color: var(--CLR-Timer);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+        font-weight: bold;
+    }
 }
 
 @media screen and (max-width: 768px) {
