@@ -7,6 +7,7 @@ let wakeLock = null;
 let timeLeft;
 const timerCanvas = document.getElementById('timerCanvas');
 const timerText = document.getElementById('timerText');
+// Canvas
 const ctx = timerCanvas.getContext('2d');
 
 
@@ -107,25 +108,13 @@ function animateTimer(timeLeft, duration) {
 }
 
 function clearFields(){
-    if (isTimerActive) {
-        isTimerActive = false;
-        clearInterval(timer);
-        document.getElementById('exerciseDuration').value = '';
-        document.getElementById('restDuration').value = '';
-        document.getElementById('steps').value = '';
-        timerText.innerText = 'READY?';
-        document.getElementById('stepCounter').innerText = 'Step: 0';
-        ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
-    }
-
-    if (!isTimerActive) {
-        document.getElementById('exerciseDuration').value = '';
-        document.getElementById('restDuration').value = '';
-        document.getElementById('steps').value = '';
-        timerText.innerText = 'READY?';
-        document.getElementById('stepCounter').innerText = 'Step: 0';
-        ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
-    }
+    stopTimer();
+    document.getElementById('exerciseDuration').value = '';
+    document.getElementById('restDuration').value = '';
+    document.getElementById('steps').value = '';
+    timerText.innerText = 'READY?';
+    document.getElementById('stepCounter').innerText = 'Step: 0';
+    ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
 }
 
 function stopTimer() {
