@@ -73,8 +73,8 @@ button {
     width: 100%;
     padding: 1.25em;
     font-size: 12px;
-    background-color: #28a745;
-    color: white;
+    background-color: var(--CLR-StartButton);
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -84,12 +84,12 @@ button {
 }
 
 #stopButton {
-    background-color: #dc3545;
+    background-color: var(--CLR-StopButton);
     margin-top: 0.5em;
 }
 
 #clearButton {
-    background-color: #007bff;
+    background-color: var(--CLR-ClearButton);
     margin-top: 0.5em;
 }
 
@@ -107,10 +107,28 @@ button:disabled:hover {
 }
 
 .timer {
-    font-size: 2em;
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+#timerCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+}
+
+#timerText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.25em;
     font-weight: bold;
     color: white;
-    margin-bottom: 0.5em;
 }
 
 .step-counter {

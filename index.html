@@ -8,8 +8,10 @@
 </head>
 <body>
     <div class="Container">
-        <h1>Exercise Interval App</h1>
-        <div class="timer" id="timerDisplay">READY?</div>
+        <div class="timer">
+            <canvas id="timerCanvas" width="128" height="128"></canvas>
+            <div id="timerText">READY?</div>
+        </div>
         <div class="inputs">
             <input type="number" id="exerciseDuration" placeholder="Exercise Duration"><br>
             <input type="number" id="restDuration" placeholder="Rest Duration"><br>

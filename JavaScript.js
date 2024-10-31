@@ -2,8 +2,13 @@ let timer;
 let currentStep = 0;
 let isExercise = true;
 let isTimerActive = false;
-const beep = new Audio('Beep.mp3'); // Load the beep sound
-let wakeLock = null; // To store the wake lock instance
+const beep = new Audio('Beep.mp3');
+let wakeLock = null;
+let timeLeft;
+const timerCanvas = document.getElementById('timerCanvas');
+const timerText = document.getElementById('timerText');
+const ctx = timerCanvas.getContext('2d');
+
 
 async function requestWakeLock() {
     try {
@@ -42,16 +47,14 @@ function startTimer() {
 
     document.getElementById('startButton').innerText = 'Restart';
     document.getElementById('stopButton').disabled = false;
-
-    document.getElementById('timerDisplay').innerText = 'Starting...';
     document.getElementById('stepCounter').innerText = `Step: 1 / ${steps}`;
 
-    nextStep(exerciseDuration, restDuration, steps); // Start immediately
+    nextStep(exerciseDuration, restDuration, steps);
 }
 
 function nextStep(exerciseDuration, restDuration, steps) {
     if (currentStep >= steps) {
-        document.getElementById('timerDisplay').innerText = 'Workout Complete!';
+        timerText.innerText = 'Workout Complete!';
         document.getElementById('startButton').innerText = 'Start';
         isTimerActive = false;
         document.getElementById('stopButton').disabled = true;
@@ -59,11 +62,10 @@ function nextStep(exerciseDuration, restDuration, steps) {
         return;
     }
 
-    const duration = isExercise ? exerciseDuration : restDuration;
+    timeLeft = isExercise ? exerciseDuration : restDuration;
     const type = isExercise ? 'Exercise' : 'Rest';
-    document.getElementById('timerDisplay').innerText = `${type} for ${duration}s`;
-
-    let timeLeft = duration;
+    timerText.innerText = `${timeLeft}s`;
+    animateTimer(timeLeft);
 
     timer = setInterval(() => {
         if (timeLeft <= 0) {
@@ -77,12 +79,12 @@ function nextStep(exerciseDuration, restDuration, steps) {
                     document.getElementById('stepCounter').innerText = `Step: ${currentStep + 1} / ${steps}`;
                 }
             }
-            nextStep(exerciseDuration, restDuration, steps); // Continue immediately
+            nextStep(exerciseDuration, restDuration, steps);
         } else {
             timeLeft -= 1;
-            document.getElementById('timerDisplay').innerText = `${type} for ${Math.ceil(timeLeft)}s`;
+            timerText.innerText = `${timeLeft}s`;
+            animateTimer(timeLeft, isExercise ? exerciseDuration : restDuration);
 
-            // Play the beep sound during the last 5 seconds of the exercise period
             if (isExercise && timeLeft <= 5 && timeLeft > 0) {
                 beep.play();
             }
@@ -90,23 +92,52 @@ function nextStep(exerciseDuration, restDuration, steps) {
     }, 1000);
 }
 
+function animateTimer(timeLeft, duration) {
+    ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+    let radius = timerCanvas.width / 2 - 10;
+    let centerX = timerCanvas.width / 2;
+    let centerY = timerCanvas.height / 2;
+    let startAngle = -Math.PI / 2;
+    let endAngle = startAngle + (2 * Math.PI * (timeLeft / duration));
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle, false);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = isExercise ? '#FFFFFF' : '#40FF40';
+    ctx.stroke();
+}
+
 function clearFields(){
-    document.getElementById('exerciseDuration').value = '';
-    document.getElementById('restDuration').value = '';
-    document.getElementById('steps').value = '';
-    document.getElementById('timerDisplay').innerText = 'READY?';
-    document.getElementById('stepCounter').innerText = 'Step: 0';
+    if (isTimerActive) {
+        isTimerActive = false;
+        clearInterval(timer);
+        document.getElementById('exerciseDuration').value = '';
+        document.getElementById('restDuration').value = '';
+        document.getElementById('steps').value = '';
+        timerText.innerText = 'READY?';
+        document.getElementById('stepCounter').innerText = 'Step: 0';
+        ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+    }
+
+    if (!isTimerActive) {
+        document.getElementById('exerciseDuration').value = '';
+        document.getElementById('restDuration').value = '';
+        document.getElementById('steps').value = '';
+        timerText.innerText = 'READY?';
+        document.getElementById('stepCounter').innerText = 'Step: 0';
+        ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+    }
 }
 
 function stopTimer() {
     clearInterval(timer);
-    document.getElementById('timerDisplay').innerText = 'Timer Stopped';
+    timerText.innerText = 'Timer Stopped';
     document.getElementById('startButton').innerText = 'Start';
     currentStep = 0;
     isTimerActive = false;
     document.getElementById('stepCounter').innerText = `Step: 0`;
     document.getElementById('stopButton').disabled = true;
     releaseWakeLock();
+    ctx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
 }
 
 function setPredefinedTimer(duration, restDuration, steps) {
